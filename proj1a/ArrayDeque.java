@@ -1,6 +1,6 @@
 public class ArrayDeque<T> {
 
-    private T a[];
+    private T[] a;
     private int size;
     private int capacity;
     private int first;
@@ -15,7 +15,7 @@ public class ArrayDeque<T> {
         a = (T []) new Object[8];
     }
 
-    public ArrayDeque(ArrayDeque<T> other) {
+    public ArrayDeque(ArrayDeque other) {
         capacity = other.capacity;
         size = other.size;
         first = other.first;
@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
         if (first == 0) {
             resize();
         }
-        first -= 1;
+        first--;
         a[first] = item;
         size++;
     }
@@ -38,7 +38,7 @@ public class ArrayDeque<T> {
             resize();
         }
         a[last] = item;
-        last += 1;
+        last++;
         size++;
     }
 
@@ -51,10 +51,6 @@ public class ArrayDeque<T> {
 
     public int size() {
         return size;
-    }
-
-    public int capacity() {
-        return capacity;
     }
 
     public void printDeque() {
@@ -71,8 +67,8 @@ public class ArrayDeque<T> {
         }
         T temp = a[first];
         a[first] = null;
-        first += 1;
-        size -= 1;
+        first++;
+        size--;
         if (size < capacity / 2) {
             resize();
         }
@@ -83,10 +79,10 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T temp = a[last];
+        T temp = a[last-1];
         a[last] = null;
-        last -= 1;
-        size -= 1;
+        last--;
+        size--;
         if (size < capacity / 2) {
             resize();
         }
@@ -97,8 +93,8 @@ public class ArrayDeque<T> {
         return a[first + index];
     }
 
-    public void resize() {
-        if (size < capacity / 2) {
+    private void resize() {
+        if (size == capacity / 2 - 1) {
             if (capacity == 8) {
                 return;
             }
@@ -108,7 +104,7 @@ public class ArrayDeque<T> {
             System.arraycopy(src, first, a, 0, size);
             first = 0;
             last = first + size;
-        } else {
+        } else if (size >= capacity / 2) {
             capacity *= 2;
             T[] src = a;
             a = (T []) new Object[capacity];
@@ -119,6 +115,11 @@ public class ArrayDeque<T> {
             }
             first = capacity / 4;
             last = first + size;
+        } else {
+            System.arraycopy(a, first, a, capacity / 4, size);
+            first = capacity / 4;
+            last = first + size;
+            // Do not resize, but changed the place.
         }
     }
 }

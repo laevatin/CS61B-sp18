@@ -1,11 +1,13 @@
 public class LinkedListDeque<T> {
 
-    public class Node {
+    private class Node {
         public Node prev;
         public Node next;
         public T value;
-        
-        public Node(){}
+
+        public Node() {
+
+        }
 
         public Node(Node p, Node n, T v) {
             prev = p;
@@ -32,10 +34,10 @@ public class LinkedListDeque<T> {
         sentinel.value = null;
     }
 
-    public LinkedListDeque(LinkedListDeque<T> other) {
+    public LinkedListDeque(LinkedListDeque other) {
         this();
         for (int i = 0; i < size; i++) {
-            addLast(other.get(i));
+            addLast((T) other.get(i));
         }
     }
 
