@@ -1,45 +1,36 @@
 public class ArrayDeque<T> {
 
-    private T[] a;
+    private T[] items;
     private int size;
     private int capacity;
-    private int first;
-    private int last;
+    private int nextFirst;
+    private int nextLast;
 
     public ArrayDeque() {
         /** The data in array a is from first to last - 1 */
         capacity = 8;
         size = 0;
-        first = 4;
-        last = 4;
-        a = (T []) new Object[8];
-    }
-
-    public ArrayDeque(ArrayDeque other) {
-        capacity = other.capacity;
-        size = other.size;
-        first = other.first;
-        last = other.last;
-        a = (T []) new Object[capacity];
-        System.arraycopy(other.a, 0, a, 0, capacity);
+        nextFirst = 7;
+        nextLast = 0;
+        items = (T[]) new Object[8];
     }
 
     public void addFirst(T item) {
-        if (first == 0) {
-            resize();
-        }
-        first--;
-        a[first] = item;
+        items[nextFirst] = item;
+        nextFirst--;
         size++;
+        if (size == capacity) {
+            expand();
+        }
     }
 
     public void addLast(T item) {
-        if (last == capacity) {
-            resize();
-        }
-        a[last] = item;
-        last++;
+        items[nextLast] = item;
+        nextLast++;
         size++;
+        if (size == capacity) {
+            expand();
+        }
     }
 
     public boolean isEmpty() {
@@ -54,23 +45,36 @@ public class ArrayDeque<T> {
     }
 
     public void printDeque() {
-        for (int i = first; i < last - 1; i++) {
-            System.out.print(a[i]);
-            System.out.print(" ");
+        int start = Math.floorMod(nextFirst + 1, capacity * 2);
+        int end = Math.floorMod(nextLast - 1, capacity * 2);
+        if (start > end) {
+            for (int i = start; i < capacity; i++) {
+                System.out.print(items[i]);
+                System.out.print(" ");
+            }
+            for (int i = 0; i <= end; i++) {
+                System.out.print(items[i]);
+                System.out.print(" ");
+            }
+        } else {
+            for (int i = start; i <= end; i++) {
+                System.out.print(items[i]);
+                System.out.print(" ");
+            }
         }
-        System.out.println(a[last - 1]);
+        System.out.println();
     }
 
     public T removeFirst() {
         if (size == 0) {
             return null;
         }
-        T temp = a[first];
-        a[first] = null;
-        first++;
         size--;
+        nextFirst = Math.floorMod(nextFirst + 1, capacity);
+        T temp = items[nextFirst];
+        items[nextFirst] = null;
         if (size < capacity / 2) {
-            resize();
+            shrink();
         }
         return temp;
     }
@@ -79,47 +83,51 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        T temp = a[last-1];
-        a[last] = null;
-        last--;
         size--;
+        nextLast = Math.floorMod(nextLast - 1, capacity);
+        T temp = items[nextLast];
+        items[nextLast] = null;
         if (size < capacity / 2) {
-            resize();
+            shrink();
         }
         return temp;
     }
 
     public T get(int index) {
-        return a[first + index];
+        if (index >= size) {
+            return null;
+        }
+        return items[Math.floorMod(nextFirst + 1 + index, capacity)];
     }
 
-    private void resize() {
-        if (size == capacity / 2 - 1) {
-            if (capacity == 8) {
-                return;
-            }
-            capacity /= 2;
-            T[] src = a;
-            a = (T []) new Object[capacity];
-            System.arraycopy(src, first, a, 0, size);
-            first = 0;
-            last = first + size;
-        } else if (size >= capacity / 2) {
-            capacity *= 2;
-            T[] src = a;
-            a = (T []) new Object[capacity];
-            if (first == 0) {
-                System.arraycopy(src, 0, a, capacity / 4, size); 
-            } else {
-                System.arraycopy(src, first, a, capacity / 4, size);
-            }
-            first = capacity / 4;
-            last = first + size;
+    private void expand() {
+        capacity *= 2;
+        T[] src = items;
+        items = (T[]) new Object[capacity];
+        int start = Math.floorMod(nextFirst + 1, capacity / 2);
+        int end = Math.floorMod(nextLast - 1, capacity / 2);
+        System.arraycopy(src, start, items, capacity / 2 + start, capacity / 2 - start);
+        nextFirst += capacity / 2;
+        System.arraycopy(src, 0, items, 0, end);
+    }
+
+    private void shrink() {
+        if (capacity == 8) {
+            return;
+        }
+        capacity /= 2;
+        T[] src = items;
+        items = (T[]) new Object[capacity];
+        int start = Math.floorMod(nextFirst + 1, capacity * 2);
+        int end = Math.floorMod(nextLast - 1, capacity * 2);
+        if (start > end) {
+            System.arraycopy(src, start, items, start - capacity, capacity * 2 - start);
+            nextFirst -= capacity;
+            System.arraycopy(src, 0, items, 0, end);
         } else {
-            System.arraycopy(a, first, a, capacity / 4, size);
-            first = capacity / 4;
-            last = first + size;
-            // Do not resize, but changed the place.
+            System.arraycopy(src, start, items, 0, end - start + 1);
+            nextLast = end - start + 1;
+            nextFirst = capacity - 1;
         }
     }
 }
