@@ -17,7 +17,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item) {
         items[nextFirst] = item;
-        nextFirst--;
+        nextFirst = Math.floorMod(nextFirst - 1, capacity);
         size++;
         if (size == capacity) {
             expand();
@@ -26,7 +26,7 @@ public class ArrayDeque<T> {
 
     public void addLast(T item) {
         items[nextLast] = item;
-        nextLast++;
+        nextLast = Math.floorMod(nextLast + 1, capacity);
         size++;
         if (size == capacity) {
             expand();
@@ -106,9 +106,15 @@ public class ArrayDeque<T> {
         items = (T[]) new Object[capacity];
         int start = Math.floorMod(nextFirst + 1, capacity / 2);
         int end = Math.floorMod(nextLast - 1, capacity / 2);
-        System.arraycopy(src, start, items, capacity / 2 + start, capacity / 2 - start);
-        nextFirst += capacity / 2;
-        System.arraycopy(src, 0, items, 0, end);
+        if (start > end) {
+            System.arraycopy(src, start, items, capacity / 2 + start, capacity / 2 - start);
+            nextFirst += capacity / 2;
+            System.arraycopy(src, 0, items, 0, end + 1);
+        } else {
+            System.arraycopy(src, 0, items, 0, size);
+            nextFirst = capacity - 1;
+            nextLast = size;
+        }
     }
 
     private void shrink() {
@@ -123,9 +129,9 @@ public class ArrayDeque<T> {
         if (start > end) {
             System.arraycopy(src, start, items, start - capacity, capacity * 2 - start);
             nextFirst -= capacity;
-            System.arraycopy(src, 0, items, 0, end);
+            System.arraycopy(src, 0, items, 0, end + 1);
         } else {
-            System.arraycopy(src, start, items, 0, end - start + 1);
+            System.arraycopy(src, start, items, 0, size);
             nextLast = end - start + 1;
             nextFirst = capacity - 1;
         }
