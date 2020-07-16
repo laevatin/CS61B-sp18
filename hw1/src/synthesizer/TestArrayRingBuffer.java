@@ -26,7 +26,14 @@ public class TestArrayRingBuffer {
             } // Runtime error expected.
         } catch (RuntimeException e) {}
 
-        
+        ArrayRingBuffer<Integer> arb1 = new ArrayRingBuffer<>(10);
+        for (int i = 0; i < 10; i += 1) {
+            arb1.enqueue(i);
+        }
+
+        for (int i: arb1) {
+            System.out.println(i);
+        }
 
     }
 
