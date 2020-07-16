@@ -45,7 +45,7 @@ public class GuitarString {
         double front = buffer.dequeue();
         double next = buffer.peek();
 
-        double newSample = ((front + next) / 2 ) * DECAY;
+        double newSample = ((front + next)/2)*DECAY;
 
         buffer.enqueue(newSample);
 

@@ -20,12 +20,6 @@ public class TestArrayRingBuffer {
             assertEquals(arb.dequeue(), (Integer) i);
         }
 
-        try {
-            for (int i = 0; i < 11; i += 1) {
-                arb.enqueue(i);
-            } // Runtime error expected.
-        } catch (RuntimeException e) {}
-
         ArrayRingBuffer<Integer> arb1 = new ArrayRingBuffer<>(10);
         for (int i = 0; i < 10; i += 1) {
             arb1.enqueue(i);
