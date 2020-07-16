@@ -137,3 +137,19 @@ public class ArrayDeque<T> {
         }
     }
 }
+
+
+/**
+    private int plusOne(int index) {
+        return (index + 1) % items.length;
+    }
+
+    private int minusOne(int index) {
+        // unlike Python, in Java, the % symbol represents "remainder" rather than "modulus",
+        // therefore, it may give negative value, so + items.length is necessary,
+        // or to use Math.floorMod(x, y)
+        return (index - 1 + items.length) % items.length;
+    }
+
+    It's better to use these two helper functions.
+*/
