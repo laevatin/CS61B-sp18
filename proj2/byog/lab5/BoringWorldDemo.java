@@ -23,14 +23,19 @@ public class BoringWorldDemo {
                 world[x][y] = Tileset.NOTHING;
             }
         }
-
+        /*
         // fills in a block 14 tiles wide by 4 tiles tall
         for (int x = 20; x < 35; x += 1) {
             for (int y = 5; y < 10; y += 1) {
                 world[x][y] = Tileset.WALL;
             }
         }
+        */
+        world[20][5] = Tileset.WALL;
+        HexWorld.addHexagon(world, 20, 5, 9, Tileset.FLOWER);
 
+        //world[20][20] = Tileset.WALL;
+        //HexWorld.addHexagon(world, 20, 20, 10, Tileset.FLOWER);
         // draws the world to the screen
         ter.renderFrame(world);
     }
