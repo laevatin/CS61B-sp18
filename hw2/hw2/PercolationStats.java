@@ -17,7 +17,7 @@ public class PercolationStats {
         this.T = T;
         simulateData = new int[T];
         for (int i = 0; i < T; i += 1) {
-            simulateData[i] = simulateOnce(N);
+            simulateData[i] = simulateOnce(N) / (N * N);
         }
     }  // perform T independent experiments on an N-by-N grid
     public double mean() {
