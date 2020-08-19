@@ -21,6 +21,7 @@ public class Percolation {
     }         // create N-by-N grid, with all sites initially blocked
 
     public void open(int row, int col) {
+        validate(row, col);
         if (isOpen(row, col)) {
             return;
         }
@@ -51,13 +52,12 @@ public class Percolation {
     }         // open the site (row, col) if it is not open already
 
     public boolean isOpen(int row, int col) {
-        if (row < 0 || row >= N || col < 0 || col >= N) {
-            throw new java.lang.IndexOutOfBoundsException();
-        }
+        validate(row, col);
         return grid[row][col] != 0;
     }        // is the site (row, col) open?
 
     public boolean isFull(int row, int col) {
+        validate(row, col);
         if (grid[row][col] == 2) {
             return true;
         } else if (wqu.connected(convert(row, col), dummyNode)){
@@ -76,13 +76,14 @@ public class Percolation {
         return wqu.connected(dummyNode, dummyNode+1);
     }       // does the system percolate?
 
-    public static void main(String[] args) {
-
-    }       // use for unit testing (not required)
-
-    private int convert(int row, int col) {
-        return row * N + col;
+    private void validate(int row, int col) {
+        if (row < 0 || row >= N || col < 0 || col >= N) {
+            throw new java.lang.IndexOutOfBoundsException();
+        }
     }
 
-
+    private int convert(int row, int col) {
+        validate(row, col);
+        return row * N + col;
+    }
 }

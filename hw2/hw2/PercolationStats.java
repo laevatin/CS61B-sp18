@@ -17,7 +17,7 @@ public class PercolationStats {
         this.T = T;
         simulateData = new int[T];
         for (int i = 0; i < T; i += 1) {
-            simulateData[i] = simulateOnce(N) / (N * N);
+            simulateData[i] = (double) simulateOnce(N) / (double) (N * N);
         }
     }  // perform T independent experiments on an N-by-N grid
     public double mean() {
@@ -34,16 +34,16 @@ public class PercolationStats {
     }  // high endpoint of 95% confidence interval
     private int simulateOnce(int N) {
         Percolation perc = pf.make(N);
-        int numberOfSites = 0;
+        int numberOfOpenSites = 0;
         while(!perc.percolates()) {
             int row = StdRandom.uniform(N);
             int col = StdRandom.uniform(N);
             if (!perc.isOpen(row, col)) {
                 perc.open(row, col);
+                numberOfOpenSites += 1;
             }
-            numberOfSites += 1;
         }
-        return numberOfSites;
+        return numberOfOpenSites;
     }
 
 }
