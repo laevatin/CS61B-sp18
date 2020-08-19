@@ -28,7 +28,8 @@ public class Percolation {
         int converted = convert(row, col);
         if (row == 0) {
             wqu.union(converted, dummyNode);
-        } else if (row == N-1) {
+        }
+        if (row == N - 1) {
             wqu.union(converted, dummyNode+1);
         }
         if (row > 0 && isOpen(row-1, col)) {

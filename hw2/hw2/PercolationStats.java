@@ -35,7 +35,7 @@ public class PercolationStats {
     private int simulateOnce(int N) {
         Percolation perc = pf.make(N);
         int numberOfOpenSites = 0;
-        while(!perc.percolates()) {
+        while (!perc.percolates()) {
             int row = StdRandom.uniform(N);
             int col = StdRandom.uniform(N);
             if (!perc.isOpen(row, col)) {
