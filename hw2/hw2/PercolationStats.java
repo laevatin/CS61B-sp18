@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 public class PercolationStats {
     private PercolationFactory pf;
-    private int[] simulateData;
+    private double[] simulateData;
     private int T;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
@@ -15,7 +15,7 @@ public class PercolationStats {
         }
         this.pf = pf;
         this.T = T;
-        simulateData = new int[T];
+        simulateData = new double[T];
         for (int i = 0; i < T; i += 1) {
             simulateData[i] = (double) simulateOnce(N) / (N * N);
         }
