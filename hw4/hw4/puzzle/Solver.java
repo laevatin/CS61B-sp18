@@ -7,13 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Collections;
 
-public final class Solver {
+public class Solver {
 
     private final class SearchNode {
-        public final WorldState state;
-        public final int numOfMoves;
-        public final SearchNode previous;
-        public final int priority;
+        private final WorldState state;
+        private final int numOfMoves;
+        private final SearchNode previous;
+        private final int priority;
 
         public SearchNode(WorldState ws, int moves, SearchNode prev) {
             state = ws;

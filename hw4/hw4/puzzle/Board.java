@@ -4,7 +4,7 @@ import java.util.Arrays;
 import edu.princeton.cs.algs4.Queue;
 
 
-public final class Board implements WorldState {
+public class Board implements WorldState {
 
     private final int[][] tiles;
     private final int size;
@@ -104,6 +104,7 @@ public final class Board implements WorldState {
         return manhattan();
     }
 
+    @Override
     public boolean equals(Object y) {
         if (this == y) {
             return true;
@@ -125,7 +126,12 @@ public final class Board implements WorldState {
 
     }
 
-    /** Returns the string representation of the board. 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    /** Returns the string representation of the board.
       * Uncomment this method. */
     public String toString() {
         StringBuilder s = new StringBuilder();
@@ -133,7 +139,7 @@ public final class Board implements WorldState {
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
