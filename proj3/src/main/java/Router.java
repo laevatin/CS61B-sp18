@@ -45,6 +45,9 @@ public class Router {
         pq.add(tmpNode);
 
         while (tmp != destNode) {
+            if (pq.isEmpty()) {
+                return new ArrayList<>();
+            }
             tmpNode = pq.remove();
             tmp = tmpNode.node;
             visited.add(tmp);
