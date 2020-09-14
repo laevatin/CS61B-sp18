@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +24,65 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+
+        /** Finding the shortest path from the start to dest using A star */
+        PriorityQueue<AStarNode> pq = new PriorityQueue<>(new Comparator<AStarNode>() {
+            @Override
+            public int compare(AStarNode o1, AStarNode o2) {
+                if (o1.distToStart + o1.estimatedDistToDest - o2.distToStart - o2.estimatedDistToDest > 0) {
+                    return 1;
+                }
+                return -1;
+            }
+        });
+        Set<Long> visited = new HashSet<>();
+
+        long startNode = g.closest(stlon, stlat);
+        long destNode = g.closest(destlon, destlat);
+
+        AStarNode tmpNode = new AStarNode(startNode, null, 0, g.distance(startNode, destNode));
+        long tmp = startNode;
+        pq.add(tmpNode);
+
+        while (tmp != destNode) {
+            tmpNode = pq.remove();
+            tmp = tmpNode.node;
+            visited.add(tmp);
+            for (long n : g.adjacent(tmp)) {
+                if (!visited.contains(n)) {
+                    double nextDTS = tmpNode.distToStart + g.distance(n, tmp);
+                    double nextEDTD = g.distance(n, destNode);
+                    pq.add(new AStarNode(n, tmpNode, nextDTS, nextEDTD));
+                }
+            }
+        }
+
+        List<Long> res = new ArrayList<>();
+        while (tmpNode != null) {
+            res.add(tmpNode.node);
+            tmpNode = tmpNode.parent;
+        }
+        Collections.reverse(res);
+
+        return res;
     }
+
+
+    /** Represents the node in the PriorityQueue */
+    static class AStarNode {
+        long node;
+        AStarNode parent;
+        double distToStart;
+        double estimatedDistToDest;
+
+        AStarNode(long n, AStarNode par, double distToStart, double estimatedDistToDest) {
+            node = n;
+            parent = par;
+            this.distToStart = distToStart;
+            this.estimatedDistToDest = estimatedDistToDest;
+        }
+    }
+
 
     /**
      * Create the list of directions corresponding to a route on the graph.
@@ -37,7 +93,8 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        List<NavigationDirection> ans = new ArrayList<>();
+        return ans;
     }
 
 
