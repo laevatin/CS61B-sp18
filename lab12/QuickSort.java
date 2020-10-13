@@ -79,10 +79,10 @@ public class QuickSort {
 
     public static void main(String[] args) {
         Queue<Integer> students = new Queue<>();
-        for (int i = 0; i < 79; i += 1) {
-            students.enqueue(79);
+        int[] arr = new int[]{6,3,9,6,3,8,6,0,8,6};
+        for (int i : arr) {
+            students.enqueue(i);
         }
-        students.enqueue(22);
         System.out.println(QuickSort.quickSort(students));
         System.out.println(students);
     }
